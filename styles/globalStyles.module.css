@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.heading {
+  font-size: 50px;
+  text-transform: uppercase;
+}
+
+.inputForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputBox {
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputBox > label {
+  font-size: 20px;
+}
+
+.inputBox > input {
+  border-radius: 5px;
+  height: 35px;
+  outline: none;
+  font-size: 18px;
+}
+
+.inputButton {
+  padding: 20px 0;
+}
+
+.inputButton > input {
+  border-radius: 5px;
+  height: 35px;
+  outline: none;
+  font-size: 18px;
+  cursor: pointer;
+  background: #dcdcdc;
+}
