@@ -1,7 +1,10 @@
 import type { NextPage } from "next";
+import Router from "next/router";
 import { FormEvent, useState } from "react";
 import Swal from "sweetalert2";
 import apiAuth from "../../api/auth";
+import { useSelector, useDispatch } from "react-redux";
+import { addUser } from "../../features/User";
 
 import globalStyles from "../../styles/globalStyles.module.css";
 
@@ -11,6 +14,9 @@ type LoginModel = {
 };
 
 const Login: NextPage = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.user.value);
+
   const [userData, setUserData] = useState<LoginModel>({
     username: "",
     password: "",
@@ -20,14 +26,27 @@ const Login: NextPage = (): JSX.Element => {
     e.preventDefault();
     try {
       const response = await apiAuth.login(userData);
-      console.log(response);
       if (response && response.status === "SUCCESS") {
         Swal.fire({
           icon: "success",
           text: response.message,
-        }).then(() => {
-          window.location.href = "/dashboard";
-        });
+        })
+          .then(() => {
+            sessionStorage.setItem("isLoggedIn", "true");
+            dispatch(
+              addUser({
+                id: response.data._id,
+                fullName: response.data.fullName,
+                email: response.data.email,
+                mobile: response.data.mobile,
+                username: response.data.username,
+              })
+            );
+            Router.push("/todo");
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
       }
     } catch (error: any) {
       console.log(error);

@@ -1,0 +1,14 @@
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttonContainer > button {
+  border-radius: 5px;
+  height: 35px;
+  outline: none;
+  font-size: 18px;
+  cursor: pointer;
+  background: #dcdcdc;
+  margin: 5px 0;
+}

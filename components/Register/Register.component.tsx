@@ -1,7 +1,10 @@
 import type { NextPage } from "next";
+import Router from "next/router";
 import { FormEvent, useState } from "react";
 import apiAuth from "../../api/auth";
 import Swal from "sweetalert2";
+import { useSelector, useDispatch } from "react-redux";
+import { addUser } from "../../features/User";
 
 import globalStyles from "../../styles/globalStyles.module.css";
 
@@ -14,6 +17,9 @@ type RegisterModel = {
 };
 
 const Register: NextPage = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.user.value);
+
   const [userData, setUserData] = useState<RegisterModel>({
     fullName: "",
     email: "",
@@ -31,9 +37,23 @@ const Register: NextPage = (): JSX.Element => {
         Swal.fire({
           icon: "success",
           text: response.message,
-        }).then(() => {
-          window.location.href = "/login";
-        });
+        })
+          .then(() => {
+            sessionStorage.setItem("isLoggedIn", "true");
+            dispatch(
+              addUser({
+                id: response.data._id,
+                fullName: response.data.fullName,
+                email: response.data.email,
+                mobile: response.data.mobile,
+                username: response.data.username,
+              })
+            );
+            Router.push("/todo");
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
       }
     } catch (error: any) {
       console.log(error);
